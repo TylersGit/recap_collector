@@ -12,16 +12,16 @@ league = League(league_id=LEAGUE_ID, year=YEAR, espn_s2=ESPN_S2, swid=SWID)
 team = league.get_team_data(team_id=TEAM_ID)
 roster_players = team.roster
 
-# Create a list of non injured/benched players. Save their name and the team they're in.
-# Additionally, note the teams that are playing. Each team should be listed only once. 
-playing_players = []
-playing_teams = set()
+# Create a dictionary that lists the playing teams.
+# Each key represents a team, and the value represents the players in the team. 
+# Only lists players that are not benched/injured
+playing_teams = {}
 
 for player in roster_players:
     if player.lineupSlot != "BE" and player.lineupSlot != "IL":
-        playing_teams.add(player.proTeam)
-        playing_players.append({
-            "name": player.name,
-            "team": player.proTeam,
-        })
+        try:
+            if playing_teams[f"{player.proTeam}"] != None: 
+                playing_teams[f"{player.proTeam}"].append(player.name)
+        except KeyError:
+            playing_teams[f"{player.proTeam}"] = [player.name]
 
