@@ -30,7 +30,3 @@ roster_players = my_team.roster
 
 playing_teams = playing_teams_getter(roster_players)
 relevant_games = relevant_games_getter(schedule, playing_teams)
-
-
-print(*relevant_games, sep="\n")
-# print(sched[0])
