@@ -25,3 +25,15 @@ def relevant_games_getter(schedule, playing_teams):
                 relevant_games.add(f"{game["home_name"]}, {game["away_name"]}, game_ID: {game_ID}")
 
     return relevant_games
+
+def game_status_getter(games_set: list[str], schedule):
+    game_IDs = []
+    for game in games_set:
+        game_id = int(game.split("game_ID: ")[1])
+        game_IDs.append({
+            "game":game, 
+            "status": schedule[game_id]["status"]
+            })
+
+    print(*game_IDs, sep="\n")
+    return game_IDs
