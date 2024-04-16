@@ -1,11 +1,12 @@
 import os
+import time 
 import datetime
 
 import statsapi
 from espn_api.baseball import League
 
 from teams_dict import TEAMS
-from data_getter import playing_teams_getter, relevant_games_getter
+from data_getter import playing_teams_getter, relevant_games_getter, game_status_getter
 
 LEAGUE_ID = os.environ["LEAGUE_ID"]
 YEAR = int(os.environ["YEAR"])
@@ -21,12 +22,38 @@ TEAM_ID = int(os.environ["TEAM_ID"])
 us_timezone = datetime.timezone(datetime.timedelta(hours=-5))
 today = datetime.datetime.today().astimezone(tz=us_timezone).strftime("%m/%d/%Y")
 
-league = League(league_id=LEAGUE_ID, year=YEAR, espn_s2=ESPN_S2, swid=SWID)
-schedule = statsapi.schedule(start_date=today, end_date=today)
+
+def main():
+    # MLB Schedule should be collected once a day.
+    # Collect the game schedule data from the MLB stats API when the
+    # function starts, because we want to always have schedule data available. 
+    try:
+        schedule = statsapi.schedule(start_date=today, end_date=today)
+    except:
+        print("Was not able to collect initial schedule data from the API.")
+    
+    try:
+        league = League(league_id=LEAGUE_ID, year=YEAR, espn_s2=ESPN_S2, swid=SWID)
+        my_team = league.get_team_data(team_id=TEAM_ID)
+        roster_players = my_team.roster
+    except:
+        print("Was not able to get League or Team data from the ESPN API. ")
+
+    while True:
+        print(datetime.datetime.now())
+
+        playing_teams = playing_teams_getter(roster_players)
+        relevant_games = relevant_games_getter(schedule, playing_teams)
+        
+        game_states = game_status_getter(relevant_games, schedule)
+        if all(game["status"] == "Final" for game in game_states):
+            print("all games done")
+
+        # NOTE: Use 60 seconds when testing. 
+        # Increase to 30 minutes or so when finished.
+        print("Going to sleep for 60.")
+        time.sleep(60)
 
 
-my_team = league.get_team_data(team_id=TEAM_ID)
-roster_players = my_team.roster
-
-playing_teams = playing_teams_getter(roster_players)
-relevant_games = relevant_games_getter(schedule, playing_teams)
+if __name__ == "__main__":
+    main()
