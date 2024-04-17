@@ -9,10 +9,10 @@ def playing_teams_getter(roster_players):
     for player in roster_players:
         if player.lineupSlot != "BE" and player.lineupSlot != "IL":
             try:
-                if playing_teams[f"{player.proTeam}"] != None: 
-                    playing_teams[f"{player.proTeam}"].append(player.name)
+                if playing_teams[f"{TEAMS[player.proTeam]}"] != None: 
+                    playing_teams[f"{TEAMS[player.proTeam]}"].append(player.name)
             except KeyError:
-                playing_teams[f"{player.proTeam}"] = [player.name]
+                playing_teams[f"{TEAMS[player.proTeam]}"] = [player.name]
 
     return playing_teams
 
@@ -21,7 +21,7 @@ def relevant_games_getter(schedule, playing_teams):
 
     for team in playing_teams.keys():
         for game_ID, game in enumerate(schedule):
-            if TEAMS[team] in (game["home_name"], game["away_name"]):
+            if team in (game["home_name"], game["away_name"]):
                 relevant_games.add(f"{game["home_name"]}, {game["away_name"]}, game_ID: {game_ID}")
 
     return relevant_games
@@ -35,5 +35,4 @@ def game_status_getter(games_set: list[str], schedule):
             "status": schedule[game_id]["status"]
             })
 
-    print(*game_IDs, sep="\n")
     return game_IDs
