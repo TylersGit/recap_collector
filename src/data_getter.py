@@ -22,7 +22,7 @@ def relevant_games_getter(schedule, playing_teams):
     for team in playing_teams.keys():
         for game_ID, game in enumerate(schedule):
             if team in (game["home_name"], game["away_name"]):
-                relevant_games.add(f"{game["home_name"]}, {game["away_name"]}, game_ID: {game_ID}")
+                relevant_games.add(f"{game["home_name"]},{game["away_name"]}, game_ID: {game_ID}")
 
     return relevant_games
 
