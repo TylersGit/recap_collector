@@ -7,6 +7,7 @@ from espn_api.baseball import League
 
 from teams_dict import TEAMS
 from data_getter import playing_teams_getter, relevant_games_getter, game_status_getter
+from whatsapp_sender import message_results
 
 LEAGUE_ID = os.environ["LEAGUE_ID"]
 YEAR = int(os.environ["YEAR"])
@@ -40,7 +41,7 @@ def main():
         print("Was not able to get League or Team data from the ESPN API. ")
 
     while True:
-        print(datetime.datetime.now())
+        print(datetime.datetime.now().astimezone(tz=us_timezone))
 
         playing_teams = playing_teams_getter(roster_players)
         relevant_games = relevant_games_getter(schedule, playing_teams)
@@ -49,6 +50,8 @@ def main():
         if all(game["status"] == "Final" for game in game_states):
             print("all games done")
 
+        message_results(game_states, playing_teams)
+        
         # NOTE: Use 60 seconds when testing. 
         # Increase to 30 minutes or so when finished.
         print("Going to sleep for 60.")
