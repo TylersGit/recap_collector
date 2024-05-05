@@ -9,6 +9,7 @@ from espn_api.baseball import League
 from teams_dict import TEAMS
 from data_getter import playing_teams_getter, relevant_games_getter, game_status_getter
 from whatsapp_sender import message_results
+from youtube_scraper import get_video_urls, process_urls
 
 load_dotenv()
 
@@ -53,7 +54,10 @@ def main():
         if all(game["status"] == "Final" for game in game_states):
             print("all games done")
 
-        message_results(game_states, playing_teams)
+        urls = get_video_urls()
+        relevant_urls = process_urls(urls, relevant_games)
+
+        # message_results(game_states, playing_teams)
         
         # NOTE: Use 60 seconds when testing. 
         # Increase to 30 minutes or so when finished.
