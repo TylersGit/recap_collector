@@ -4,6 +4,8 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
+from teams_dict import FULL_TO_PARTIAL_NAME
+
 options = webdriver.ChromeOptions()
 options.add_argument("--headless")
 options.add_argument('--no-sandbox')
@@ -47,8 +49,7 @@ def process_urls(url_list, game_list):
             for game in game_list:  
                 teams = game.split(",")[0:2]
                 for team in teams:
-                    print(video, team)
-                    if team in video:
+                    if FULL_TO_PARTIAL_NAME[team] in video:
                         relevant_urls.append(url)
 
     for url in relevant_urls:
