@@ -35,22 +35,26 @@ def get_video_urls():
     return values
 
 def process_urls(url_list, game_list):
-    """Returns the list of relevant URLs according to the playing teams. 
+    """Returns the set of relevant URLs according to the playing teams. 
 
     Args:
         url_list: A list of all recent videos from the MLB youtube channel.
         game_list: A list of relevant games according to the set roster. 
     """
-    relevant_urls = []
+    relevant_urls = set()
     for url in url_list:
         # url[0] is the video name. 
         video = url[0]
-        if "vs." in video:
-            for game in game_list:  
-                teams = game.split(",")[0:2]
-                for team in teams:
-                    if FULL_TO_PARTIAL_NAME[team] in video:
-                        relevant_urls.append(url)
+        if "vs." not in video:
+            continue
+
+        for game in game_list:  
+            teams = game.split(",")[0:2]
+            for team in teams:
+                if FULL_TO_PARTIAL_NAME[team] not in video:
+                    continue
+
+                relevant_urls.add(url)
 
     for url in relevant_urls:
         print(url)
