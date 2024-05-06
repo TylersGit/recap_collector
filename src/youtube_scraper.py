@@ -1,3 +1,5 @@
+import datetime
+
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -54,7 +56,16 @@ def process_urls(url_list, game_list):
                 if FULL_TO_PARTIAL_NAME[team] not in video:
                     continue
 
-                relevant_urls.add(url)
+        # TODO: This part of the code is a duplicate from recap_collector.py. There is probably a better way of having it here too. 
+        us_timezone = datetime.timezone(datetime.timedelta(hours=-5))
+        today = datetime.datetime.today().astimezone(tz=us_timezone).strftime("%m/%d/%y")
+
+        # FIXME: Today returns a zero-padded day and month so no videos are matched. 
+        print(today)
+        if today not in video:
+            continue
+
+        relevant_urls.add(url)
 
     for url in relevant_urls:
         print(url)
