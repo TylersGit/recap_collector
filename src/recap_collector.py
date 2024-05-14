@@ -3,11 +3,14 @@ import time
 import datetime
 
 import statsapi
-from espn_api.baseball import League
 
+from dotenv import load_dotenv
+from espn_api.baseball import League
 from teams_dict import TEAMS
 from data_getter import playing_teams_getter, relevant_games_getter, game_status_getter
 from whatsapp_sender import message_results
+
+load_dotenv()
 
 LEAGUE_ID = os.environ["LEAGUE_ID"]
 YEAR = int(os.environ["YEAR"])

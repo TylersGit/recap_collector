@@ -1,5 +1,9 @@
 import os
-import pywhatkit
+# import pywhatkit
+
+from dotenv import load_dotenv
+
+load_dotenv()
 
 phone_number = os.environ["PHONE_NUMBER"]
 
@@ -17,4 +21,4 @@ def message_results(game_states, playing_teams):
                     continue
 
             message += "\n"
-            pywhatkit.sendwhatmsg_instantly(phone_number, message=message)
+            # pywhatkit.sendwhatmsg_instantly(phone_number, message=message)
