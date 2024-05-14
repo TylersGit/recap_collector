@@ -39,7 +39,7 @@ FULL_TO_PARTIAL_NAME = {
 "Chicago Cubs": "Cubs",
 "Chicago White Sox": "White Sox",
 "Cincinnati Reds": "Reds",
-"Cleaveland Guardians": "Guardians",
+"Cleveland Guardians": "Guardians",
 "Colorado Rockies": "Rockies",
 "Detroit Tigers": "Tigers",
 "Houston Astros": "Astros", 
