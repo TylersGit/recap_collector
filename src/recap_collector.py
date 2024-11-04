@@ -5,18 +5,13 @@ import datetime
 import statsapi
 
 from dotenv import load_dotenv
-from espn_api.baseball import League
 from teams_dict import TEAMS
 from data_getter import playing_teams_getter, relevant_games_getter, game_status_getter
 from whatsapp_sender import message_results
 
 load_dotenv()
 
-LEAGUE_ID = os.environ["LEAGUE_ID"]
 YEAR = int(os.environ["YEAR"])
-SWID = os.environ["SWID"]
-ESPN_S2 = os.environ["ESPN_S2"]
-TEAM_ID = int(os.environ["TEAM_ID"])
 
 # Make sure that everything works on US time to prevent finicky game times.
 # It'll be easier to get the games if they start and end on the same day, rather
@@ -36,12 +31,6 @@ def main():
     except:
         print("Was not able to collect initial schedule data from the API.")
     
-    try:
-        league = League(league_id=LEAGUE_ID, year=YEAR, espn_s2=ESPN_S2, swid=SWID)
-        my_team = league.get_team_data(team_id=TEAM_ID)
-        roster_players = my_team.roster
-    except:
-        print("Was not able to get League or Team data from the ESPN API. ")
 
     while True:
         print(datetime.datetime.now().astimezone(tz=us_timezone))
