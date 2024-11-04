@@ -12,6 +12,7 @@ from whatsapp_sender import message_results
 load_dotenv()
 
 YEAR = int(os.environ["YEAR"])
+TEAM = os.environ["team"]
 
 # Make sure that everything works on US time to prevent finicky game times.
 # It'll be easier to get the games if they start and end on the same day, rather
@@ -35,8 +36,9 @@ def main():
     while True:
         print(datetime.datetime.now().astimezone(tz=us_timezone))
 
-        playing_teams = playing_teams_getter(roster_players)
-        relevant_games = relevant_games_getter(schedule, playing_teams)
+        # There will usually be only one game, but we will need 
+        # to account for double-headers.
+        relevant_games = relevant_games_getter(schedule, TEAM)
         
         game_states = game_status_getter(relevant_games, schedule)
         if all(game["status"] == "Final" for game in game_states):
