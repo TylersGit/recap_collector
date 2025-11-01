@@ -1,4 +1,4 @@
-TEAMS = {
+BASEBALL_TEAMS = {
     "Ari": "Arizona Diamondbacks",
     "Atl": "Atlanta Braves",
     "Bal": "Baltimore Orioles",

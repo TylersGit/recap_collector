@@ -7,7 +7,6 @@ import statsapi
 from dotenv import load_dotenv
 from teams_dict import TEAMS
 from data_getter import playing_teams_getter, relevant_games_getter, game_status_getter
-from whatsapp_sender import message_results
 
 load_dotenv()
 
@@ -43,8 +42,6 @@ def main():
         game_states = game_status_getter(relevant_games, schedule)
         if all(game["status"] == "Final" for game in game_states):
             print("all games done")
-
-        message_results(game_states, playing_teams)
         
         # NOTE: Use 60 seconds when testing. 
         # Increase to 30 minutes or so when finished.
